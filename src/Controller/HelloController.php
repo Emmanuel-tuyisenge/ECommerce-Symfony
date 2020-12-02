@@ -4,41 +4,35 @@ namespace App\Controller;
 
 
 use App\Taxes\Calculator;
-use Cocur\Slugify\Slugify;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class HelloController
 {
-    protected $calculator;
 
     public function __construct(Calculator $calculator)
     {
         $this->calculator = $calculator;
     }
 
-    // protected $logger;
 
-    // public function __construct(LoggerInterface $logger)
-    // {
-    //     $this->logger = $logger;
-    // }
 
     /**
      * @Route("/hello/{name?World}", name="hello")
      */
-    public function hello(
-        $name,
-        LoggerInterface $logger,
-        Calculator $calculator,
-        Slugify $slugify
-    ) {
-        dump($slugify->slugify("Hello World!!"));
+    public function hello($name, Environment $twig)
+    {
+        $html = $twig->render('hello.html.twig', [
+            'name' => $name,
+            'ages' => [
+                12,
+                18,
+                29,
+                15
+            ]
+        ]);
 
-        $logger->error("Mon message de log !");
-        $tva = $this->calculator->calcul(100);
-        dump($tva);
-        return new Response("Hello $name");
+        return new Response($html);
     }
 }
