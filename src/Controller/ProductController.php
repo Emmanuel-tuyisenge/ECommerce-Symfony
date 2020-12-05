@@ -77,6 +77,7 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted()) {
             // $product = $form->getData(); //car product est ds le creatForm
+            dd($form->getData());
             $em->flush();
 
             // $response = new Response();
