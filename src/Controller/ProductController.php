@@ -16,6 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController extends AbstractController
 {
@@ -66,18 +67,33 @@ class ProductController extends AbstractController
         ProductRepository $productRepository,
         Request $request,
         EntityManagerInterface $em,
-        UrlGeneratorInterface $urlGenerator
+        ValidatorInterface $validator
     ) {
-        $product = $productRepository->find($id);
 
+        // $product = new Product;
+        // $product->setName("Salut à tous")
+        //     ->setPrice(200);
+
+        // $resultat = $validator->validate($product);
+
+        // if ($resultat->count() > 0) {
+        //     dd("il y a des erreurs ", $resultat);
+        // }
+
+
+        $product = $productRepository->find($id);
         $form = $this->createForm(ProductType::class, $product);
+
+        // $form = $this->createForm(ProductType::class, $product, [
+        //     "validation_groups" => ["large-name", "with-price"]
+        // ]);
         //$form->setData($product);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // $product = $form->getData(); //car product est ds le creatForm
-            dd($form->getData());
+            //dd($form->getData());
             $em->flush();
 
             // $response = new Response();
