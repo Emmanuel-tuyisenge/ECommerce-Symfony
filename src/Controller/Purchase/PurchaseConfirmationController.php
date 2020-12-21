@@ -7,6 +7,7 @@ use App\Entity\Purchase;
 use App\Cart\CartService;
 use App\Entity\PurchaseItem;
 use App\Form\CartConfirmationType;
+use App\Purchase\PurchasePersister;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +21,13 @@ class PurchaseConfirmationController extends AbstractController
 
     protected $em;
 
-    public function __construct(CartService $cartService, EntityManagerInterface $em)
+    protected $persister;
+
+    public function __construct(CartService $cartService, EntityManagerInterface $em, PurchasePersister $persister)
     {
         $this->cartService = $cartService;
         $this->em = $em;
+        $this->persister = $persister;
     }
 
 
@@ -62,39 +66,14 @@ class PurchaseConfirmationController extends AbstractController
         /** @var Purchase */
         $purchase = $form->getData();
 
-        //lier avec le user connecté "security"
-        $purchase->setUser($user)
-            ->setPurchasedAt(new DateTime())
-            ->setTotal($this->cartService->getTotal());
+        $this->persister->storePurchase($purchase);
 
-        $this->em->persist($purchase);
+        // $this->cartService->empty();
 
-        //lier avec les produits qui sont ds le panier =>"CartService"
-        //$total = 0;
+        // $this->addFlash('success', 'La commande a bien été enregistrée');
 
-        foreach ($this->cartService->getDetailedCartItems() as $cartItem) {
-            $purchaseItem = new PurchaseItem;
-            $purchaseItem->setPurchase($purchase)
-                ->setProduct($cartItem->product)
-                ->setProductName($cartItem->product->getName())
-                ->setQuantity($cartItem->qty)
-                ->setTotal($cartItem->getTotal())
-                ->setProductPrice($cartItem->product->getPrice());
-
-            //$total += $cartItem->getTotal();
-
-            $this->em->persist($purchaseItem);
-        }
-
-        //$purchase->setTotal($total);
-
-        //enregistrer la commande =>"EntityManagerInterface"
-        $this->em->flush();
-
-        $this->cartService->empty();
-
-        $this->addFlash('success', 'La commande a bien été enregistrée');
-
-        return $this->redirectToRoute('purchase_index');
+        return $this->redirectToRoute('purchase_payment_form', [
+            'id' => $purchase->getId()
+        ]);
     }
 }
