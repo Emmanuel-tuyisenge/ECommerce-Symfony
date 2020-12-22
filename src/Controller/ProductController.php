@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Product;
+use App\Event\ProductViewEvent;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,7 +43,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/{category_slug}/{slug}", name="product_show", priority=-1)
      */
-    public function show($slug, $prenom, ProductRepository $productRepository, Request $request)
+    public function show($slug, $prenom, ProductRepository $productRepository, EventDispatcherInterface $dispatcher)
     {
         //dd($urlGenerator->generate('homepage'));
         //dd($prenom);
@@ -53,6 +55,8 @@ class ProductController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException("La catégorie demandée n'existe pas");
         }
+
+        $dispatcher->dispatch(new ProductViewEvent($product), 'product.view');
 
         return $this->render('product/show.html.twig', [
             'product' => $product,

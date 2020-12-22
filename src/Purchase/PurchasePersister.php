@@ -27,9 +27,9 @@ class PurchasePersister
     public function storePurchase(Purchase $purchase)
     {
         //lier avec le user connecté "security"
-        $purchase->setUser($this->security->getUser())
-            ->setPurchasedAt(new DateTime())
-            ->setTotal($this->cartService->getTotal());
+        $purchase->setUser($this->security->getUser());
+        //->setPurchasedAt(new DateTime()) //car on l'a mit dans l'entity purchase 
+        //->setTotal($this->cartService->getTotal()); // ajouté le calcul ds l'entity Purchase
 
         $this->em->persist($purchase);
 
