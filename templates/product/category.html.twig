@@ -21,7 +21,7 @@
 		{{ category.name }}</h1>
 	<div class="row">
 		{% for p in category.products %}
-			<div class="col-3">
+			<div class="col-xs-3 col-sm-6 col-md-4 col-lg-3">
 				{% include "product/_product_card.html.twig" %}
 			</div>
 		{% endfor %}
