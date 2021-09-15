@@ -2,14 +2,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		{% block stylesheets %}
-			<link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-		{% endblock %}
+		{% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %}
 	</head>
 	<body>
 		<header>{% include "shared/_navbar.html.twig" %}</header>
@@ -24,8 +23,8 @@
 			{% endfor %}
 		</div>
 
-		<div class="container pt-5"> {% block body %}{% endblock %}
+		<div class="container"> {% block body %}{% endblock %}
 			</div>
-			{% block javascripts %}{% endblock %}
+			{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}
 		</body>
 	</html>

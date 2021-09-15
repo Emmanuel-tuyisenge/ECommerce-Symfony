@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "autoprefixer": "^10.3.2",
+    "bootstrap": "^5.0.2",
+    "core-js": "^3.16.2",
+    "node-sass": "^6.0.1",
+    "postcss": "^8.1.0",
+    "postcss-loader": "^6.1.1",
+    "sass-loader": "^9.0.1",
+    "webpack": "^5.0.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@symfony/stimulus-bridge": "^2.1.0",
+    "@symfony/webpack-encore": "^1.5.0",
+    "sass": "^1.37.5",
+    "stimulus": "^2.0.0",
+    "webpack-notifier": "^1.6.0"
+  }
+}

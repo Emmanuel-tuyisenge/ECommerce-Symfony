@@ -9,7 +9,7 @@
 	<h1>Nos produits phares</h1>
 	<div class="row">
 		{% for product in products %}
-			<div class="col-xs-4 col-sm-6 col-md-4">
+			<div class="col-sm-6 col-md-4">
 				{% include "product/_product_card.html.twig" with {'p': product} %}
 			</div>
 		{% endfor %}

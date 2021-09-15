@@ -107,7 +107,7 @@ class ProductController extends AbstractController
             //     'slug' => $product->getSlug()
             // ]);
             // $response->headers->set('Location', $url);
-            // $response->setStatusCode(302); 
+            // $response->setStatusCode(302);
             //ce ligne en bas remplace les deux qui sont à haut
             // $response = new RedirectResponse($url);
             // return $response;
